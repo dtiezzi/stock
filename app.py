@@ -26,6 +26,14 @@ def user():
         conn.close()
         return render_template('index.html')
 
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    conn = sqlite3.connect('stock.db')
+    if request.method == 'POST':
+        return render_template('index.html', user=session.user)
+    else:
+        return render_template('signup.html')
+
 @app.route('/logout', methods=['POST'])
 def logout():
     if request.method == 'POST':

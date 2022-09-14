@@ -30,6 +30,7 @@
               <th>EBITIDA</th>
               <th>Close</th>
               <th>Beta</th>
+              <th>DY</th>
             </tr>
             {% for k in stocks %}
                 <tr>
@@ -37,6 +38,7 @@
                 <td>{{ stocks[k].ebitida }}</td>
                 <td>{{ stocks[k].close }}</td>
                 <td>{{ stocks[k].beta }}</td>
+                <td>{{ stocks[k].dy }}</td>
                 </tr>
             {% endfor %}
         </table>

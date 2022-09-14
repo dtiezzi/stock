@@ -1,10 +1,12 @@
 CREATE TABLE users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    username CHAR(21)
+    username CHAR(21),
+    passwd CHAR(36)
 );
 
 CREATE TABLE tickers (
-    ticker CHAR(11) PRIMARY KEY NOT NULL
+    ticker CHAR(11) PRIMARY KEY NOT NULL,
+    initials CHAR(9)
 );
 
 CREATE TABLE brokers (

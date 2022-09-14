@@ -1,0 +1,29 @@
+.container {
+    margin-top: 5em;
+    padding-left: 17%;
+    padding-right: 17%;
+}
+
+.signup {
+    border-style: solid;
+    background-color: cadetblue;
+    padding: 20px;
+    display: flex;
+    width: auto;
+    max-width: 400px;
+    flex-direction: column;
+}
+
+.fmip {
+    max-width: 350px;
+}
+
+.fmlb {
+    font-size: larger;
+}
+
+#fmbtn {
+    margin-top: 17px;
+    max-width: 100px;
+    margin-left: 67%;
+}

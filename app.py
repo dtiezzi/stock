@@ -16,7 +16,9 @@ app.secret_key = os.getenv('SECRET_KEY')
 def index():
     with open("./static/files/stockInfo.pkl", "rb") as file:
         stock_dict = pickle.load(file)
-    return render_template('index.html', stocks=stock_dict)
+    l = list(time.localtime())
+    date = f'{l[2]}/{l[1]}/{l[0]} - {l[3]}:{l[4]}'
+    return render_template('index.html', stocks=stock_dict, date=date)
 
 @app.route('/login', methods=['POST'])
 def user():
@@ -32,11 +34,11 @@ def user():
                 session.user = 'dtiezzi'
                 return render_template('user.html', user=session.user)
             else:
-                return render_template('index.html')
+                return render_template('signup.html')
         else:
-            return render_template('index.html')
+            return render_template('signup.html')
     else:
-        return render_template('index.html')
+        return render_template('signup.html')
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -51,7 +53,11 @@ def signup():
             cur.execute(f"INSERT INTO users (username, passwd) VALUES ('{user}', '{password}')")
         conn.commit()
         conn.close()
-        return render_template('index.html')
+        with open("./static/files/stockInfo.pkl", "rb") as file:
+            stock_dict = pickle.load(file)
+        l = list(time.localtime())
+        date = f'{l[2]}/{l[1]}/{l[0]} - {l[3]}:{l[4]}'
+        return render_template('index.html', stocks=stock_dict, date=date)
     else:
         return render_template('signup.html')
 
@@ -59,7 +65,11 @@ def signup():
 def logout():
     if request.method == 'POST':
         session.clear()
-        return render_template('index.html')
+        with open("./static/files/stockInfo.pkl", "rb") as file:
+            stock_dict = pickle.load(file)
+        l = list(time.localtime())
+        date = f'{l[2]}/{l[1]}/{l[0]} - {l[3]}:{l[4]}'
+        return render_template('index.html', stocks=stock_dict, date=date)
     else:
         return render_template('user.html')
 

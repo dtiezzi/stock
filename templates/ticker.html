@@ -19,25 +19,20 @@
         </div>
     </nav>
 
-    <div class="container-fluid">
+    <div class="container-large">
         <div class="row">
             <div class="col">
-                <h1>{{ user }} PAGE</h1>
+                <h1>{{ ticker }}</h1>
+                <form action="/login">
+                    <button class="btn btn-warning">VOLTAR</button>
+                </form>
             </div>
           </div>
         <div class="row">
           <div class="col">
-            <h3>Meus ativos</h3>
-            <div style="border-style: solid; border-radius: 10px; padding: 2%;">
-                <form action="/addshare" method="POST">
-                    <input type="text" name="ticker" placeholder="TICKER" autofocus>
-                    <input type="text" name="broker" placeholder="CORRETORA">
-                    <input type="number" step="0.01" name="purchase_val" placeholder="PREÇO">
-                    <input type="number" name="quant" placeholder="QUANTIDADE">
-                    <input type="date" name="purchase_dt">
-                    <button class="btn btn-warning" type="submit">INSERIR</button>
-                </form>
-            </div>
+            <figure class="img-fluid mx-auto">
+                {{ figure[0]|safe }}
+            </figure>
             <div style="border-style: solid; border-radius: 10px; margin-top: 10px;">
                 <table>
                     <tr>
@@ -67,22 +62,6 @@
                     {% endfor %}
                 </table>
             </div>
-          </div>
-          <div class="col">
-            <h3>Opções</h3>
-            <form action="">
-                <label for="">Teste</label>
-                <input type="text">
-                
-            </form>
-            <figure class="img-fluid mx-auto">
-                {{ figure[0]|safe }}
-             </figure>
-             <figure class="img-fluid mx-auto">
-                {% if tickerplot[0] %}
-                {{ tickerplot[0]|safe }}
-                {% endif %}
-             </figure>
           </div>
         </div>
       </div>

@@ -63,6 +63,7 @@ def user():
         if session['user']:
             conn = sqlite3.connect('stock.db')
             cur = conn.cursor()
+            cur.execute(f"SELECT * FROM holding WHERE user_id = '{session['user_id']}'")
             res = cur.fetchall()
             myShares = {t[2].split('.')[0].upper(): {'broker': t[3], 'purchase_val': t[4], 'quant': t[5], 'purchase_dt': t[6], 'ticker': t[2]} for t in res}
             for k in myShares:
@@ -101,8 +102,11 @@ def plotticker():
     y = df['close'].to_list()
     fig1 = px.line(x=X, y=y, title=ticker)
     div1 = fig1.to_html(full_html=False)
-    return render_template('ticker.html', figure = [div1])
+    return render_template('ticker.html', ticker=ticker, figure=[div1])
 
+# @app.route('/backuser')
+# def backuser():
+#     return redirect(url_for('user'))
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():

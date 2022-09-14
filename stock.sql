@@ -37,3 +37,11 @@ CREATE TABLE sold (
     selling_dt DATE,
     FOREIGN KEY (holding_id) REFERENCES holding(id)
 );
+
+CREATE TABLE mylist (
+    ticker CHAR(11),
+    user_id INTEGER,
+    fg_active BOOL DEFAULT true,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (ticker) REFERENCES tickers(ticker)
+);

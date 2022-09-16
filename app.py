@@ -1,24 +1,21 @@
 from flask import Flask, render_template, url_for, redirect, request, session
 from matplotlib import ticker
-# from flask_session import Session
 import yahoo_fin.stock_info as si
 import sqlite3
 import os
 import time
 from dotenv import load_dotenv
 import pickle
-# import pandas_datareader.data as web
 import pandas as pd
 import plotly.express as px
-# import json
-# import plotly
 
 app = Flask(__name__)
 app.config["SESSION_PERMANENT"] = False
-# app.config["SESSION_TYPE"] = "filesystem"
-# Session(app)
+
 load_dotenv()
 app.secret_key = os.getenv('SECRET_KEY')
+IP = os.getenv('IP')
+PORT = os.getenv('PORT')
 
 @app.route('/')
 def index():

@@ -10,20 +10,20 @@ CREATE TABLE tickers (
 );
 
 CREATE TABLE brokers (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT,
-    st_name CHAR(11)
+    id CHAR(11) PRIMARY KEY,
+    broker_nm TEXT,
+    
 );
 
 CREATE TABLE holding (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER,
     ticker CHAR(11),
-    broker_id INTEGER,
+    broker_id CHAR(11),
     purchase_value NUMERIC,
     quant INTEGER,
     purchase_dt DATE,
-    fg_active BOOL,
+    fg_active BOOL DEFAULT true,
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (ticker) REFERENCES tickers(ticker),
     FOREIGN KEY (broker_id) REFERENCES brokers(id)
@@ -35,6 +35,7 @@ CREATE TABLE sold (
     sell_value NUMERIC,
     quant INTEGER,
     selling_dt DATE,
+    yield NUMERIC,
     FOREIGN KEY (holding_id) REFERENCES holding(id)
 );
 

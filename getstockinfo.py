@@ -10,12 +10,13 @@ conn = sqlite3.connect('stock.db')
 cur = conn.cursor()
 cur.execute('SELECT * FROM tickers')
 res = cur.fetchall()
+res.sort()
 for n,t in enumerate(res):
     stock_dict[t[1]] = Stock(t[0], t[1])
     stock_dict[t[1]].get_quote()
     stock_dict[t[1]].get_stats()
     stock_dict[t[1]].get_divyield()
-    print(f'{n} from {len(res)}')
+    print(f'{n+1} from {len(res)}')
 conn.close()
 
 with open('./static/files/stockInfo.pkl', 'wb') as file:

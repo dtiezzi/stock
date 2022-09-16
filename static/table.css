@@ -10,10 +10,33 @@ table {
 
 td, th {
     border: 1px solid #dddddd;
-    text-align: left;
     padding: 8px;
 }
 
 tr:nth-child(even) {
     background-color: #dddddd;
+}
+
+th.l {
+    text-align: left;
+}
+
+th.r {
+    text-align: right;
+}
+
+th.c {
+    text-align: center;
+}
+
+td.l {
+    text-align: left;
+}
+
+td.r {
+    text-align: right;
+}
+
+td.c {
+    text-align: center;
 }

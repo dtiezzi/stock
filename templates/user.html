@@ -9,7 +9,7 @@
     <title>STOCK MARKET API</title>
 </head>
 <body>
-    <nav class="navbar navbar-dark bg-dark">
+    <nav class="navbar fixed-top navbar-dark bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand">StockMarket</a>
             <form class="d-flex" action="logout" method="POST">
@@ -21,7 +21,7 @@
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col">
+            <div class="col-8">
                 <h1>{{ user }} PAGE</h1>
             </div>
           </div>
@@ -41,43 +41,74 @@
             <div style="border-style: solid; border-radius: 10px; margin-top: 10px;">
                 <table>
                     <tr>
-                    <th>Ticker</th>
-                    <th>Cor.</th>
-                    <th>Valor</th>
-                    <th>Quant.</th>
-                    <th>Data</th>
-                    <th>Valor Atual</th>
-                    <th>Total</th>
-                    <th>Rendimento</th>
+                    <th class="c">Ticker</th>
+                    <th class="c">Cor.</th>
+                    <th class="r">Valor</th>
+                    <th class="r">Quant.</th>
+                    <th class="c">Data</th>
+                    <th class="r">Valor Atual</th>
+                    <th class="r">Total</th>
+                    <th class="r">Rendimento</th>
                     </tr>
                     {% for k in myShares %}
                         <tr>
                         <form action="/plotticker" method="POST">
-                            <input type="hidden" name="ticker" value="{{ myShares[k]['ticker'] }}">
-                            <td><button class="btn btn-outline-primary" type="submit">{{ k }}</button></td>
+                            <input type="hidden" name="ticker" value="{{ myShares[k]['ticker'].split(':')[0] }}">
+                            <td class="c"><button class="btn btn-outline-primary" type="submit">{{ k.split(':')[0] }}</button></td>
                         </form>
-                        <td>{{ myShares[k]['broker'] }}</td>
-                        <td>{{ myShares[k]['purchase_val'] }}</td>
-                        <td>{{ myShares[k]['quant'] }}</td>
-                        <td>{{ myShares[k]['purchase_dt'] }}</td>
-                        <td>{{ myShares[k]['current_val'] }}</td>
-                        <td>{{ myShares[k]['total_val'] }}</td>
-                        <td>{{ myShares[k]['yield'] }}%</td>
+                        <td class="c">{{ myShares[k]['broker'] }}</td>
+                        <td class="r">{{ myShares[k]['purchase_val'] }}</td>
+                        <td class="r">{{ myShares[k]['quant'] }}</td>
+                        <td class="c">{{ myShares[k]['purchase_dt'] }}</td>
+                        <td class="r">{{ myShares[k]['current_val'] }}</td>
+                        <td class="r">{{ myShares[k]['total_val'] }}</td>
+                        <td class="r">{{ myShares[k]['yield'] }}%</td>
                         </tr>
                     {% endfor %}
                 </table>
             </div>
           </div>
-          <div class="col">
-            <h3>Opções</h3>
-            <form action="">
-                <label for="">Teste</label>
-                <input type="text">
-                
-            </form>
+          <div class="col-4">
             <figure class="img-fluid mx-auto">
                 {{ figure[0]|safe }}
-             </figure>
+            </figure>
+            <h3>Vendas de ativos</h3>
+            <div style="border-style: solid; border-radius: 10px; padding: 2%;">
+                <form action="/sellshare" method="POST">
+                    <input type="text" name="ticker" placeholder="TICKER" autofocus>
+                    <input type="text" name="broker" placeholder="CORRETORA">
+                    <input type="number" step="0.01" name="selling_val" placeholder="PREÇO">
+                    <input type="number" name="quant" placeholder="QUANTIDADE">
+                    <input type="date" name="selling_dt">
+                    <button class="btn btn-warning" type="submit">VENDIDO</button>
+                </form>
+            </div>
+            <h3>Vendas do Mês</h3>
+            <div style="border-style: solid; border-radius: 10px; padding: 2%;">
+                <table>
+                    <tr>
+                        <th class="l">Ticker</th>
+                        <th class="c">Data</th>
+                        <th class="r">Venda</th>
+                        <th class="r">Lucro</th>
+                    </tr>
+                    {% for k in sold %}
+                        <tr>
+                            <td class="l">{{ k[1] }}</td>
+                            <td class="c">{{ k[4] }}</td>
+                            <td class="r">{{  "%.2f"|format(k[2]*k[3]) }}</td>
+                            <td class="r">{{ k[5] }}</td>
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        <td class="c"><span style="font-weight: bolder;">TOTAL</span></td>
+                        <td class="c">---</td>
+                        <td class="r"><span style="font-weight: bolder;">{{ total }}</span></td>
+                        <td class="r"><span style="font-weight: bolder;">{{ yield_month }}</span></td>
+                    </tr>
+                </table>
+            </div>
+            
              <figure class="img-fluid mx-auto">
              </figure>
           </div>

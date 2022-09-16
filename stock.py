@@ -23,7 +23,7 @@ class Stock:
         df = si.get_dividends(self.ticker)
         self.dy = df['dividend'].iloc[-1] if df.shape[0] else nan
          
-# prio = Stock('prio3.sa', 'PRIO3')
+# prio = Stock('enat3.sa', 'PRIO3')
 # prio.get_quote()
 # prio.get_stats()
 # prio.get_divyield()

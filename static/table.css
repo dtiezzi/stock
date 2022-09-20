@@ -6,6 +6,8 @@ table {
     font-family: arial, sans-serif;
     border-collapse: collapse;
     width: 100%;
+    font-size: larger;
+    font-weight: bold;
 }
 
 td, th {
@@ -17,26 +19,30 @@ tr:nth-child(even) {
     background-color: #dddddd;
 }
 
-th.l {
+th#l {
     text-align: left;
 }
 
-th.r {
+th#r {
     text-align: right;
 }
 
-th.c {
+th#c {
     text-align: center;
 }
 
-td.l {
+td#l {
     text-align: left;
 }
 
-td.r {
+td#r {
     text-align: right;
 }
 
-td.c {
+td#c {
     text-align: center;
+}
+
+td#yield {
+    text-align: right;
 }

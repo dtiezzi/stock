@@ -1,3 +1,4 @@
+from cv2 import denoise_TVL1
 from flask import Flask, render_template, url_for, redirect, request, session
 from matplotlib import ticker
 import yahoo_fin.stock_info as si
@@ -8,6 +9,7 @@ from dotenv import load_dotenv
 import pickle
 import pandas as pd
 import plotly.express as px
+from plotyield import plotyield, plotvalues
 
 app = Flask(__name__)
 app.config["SESSION_PERMANENT"] = False
@@ -53,6 +55,10 @@ def user():
                  }, title='Cotação IBOV')
                 global div
                 div = fig.to_html(full_html=False)
+                global div1
+                df_quote = pd.read_csv('./static/files/my_investiments.csv')
+                div1 = plotyield(df_quote).to_html(full_html=False)
+                div2 = plotvalues(df_quote).to_html(full_html=False)
                 global ids_dict
                 with open("./static/files/idstickers.pkl", "rb") as file:
                     ids_dict = pickle.load(file)
@@ -73,7 +79,7 @@ def user():
                     s[1] = ids_dict[s[1]].split('.')[0].upper()
                 total = round(sum([v[2]*v[3] for v in sold_month]),2)
                 yield_month = round(sum([v[-1] for v in sold_month]),2)
-                return render_template('user.html', user=session['user'], myShares=myShares, figure = [div], sold=sold_month, total=total, yield_month=yield_month)
+                return render_template('user.html', user=session['user'], myShares=myShares, figure = [div], figure1 = [div1, div2], sold=sold_month, total=total, yield_month=yield_month)
             else:
                 return render_template('signup.html')
         else:
@@ -100,7 +106,7 @@ def user():
                 s[1] = ids_dict[s[1]].split('.')[0].upper()
             total = round(sum([v[2]*v[3] for v in sold_month]),2)
             yield_month = round(sum([v[-1] for v in sold_month]),2)
-            return render_template('user.html', user=session['user'], myShares=myShares, figure = [div], sold=sold_month, total=total, yield_month=yield_month)
+            return render_template('user.html', user=session['user'], myShares=myShares, figure = [div], figure1 = [div1, div2], sold=sold_month, total=total, yield_month=yield_month)
         return render_template('signup.html')
 
 @app.route('/addshare', methods=['POST'])
@@ -174,10 +180,6 @@ def plotticker():
     div1 = fig1.to_html(full_html=False)
     return render_template('ticker.html', ticker=ticker, figure=[div1])
 
-# @app.route('/backuser')
-# def backuser():
-#     return redirect(url_for('user'))
-
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     conn = sqlite3.connect('stock.db')
@@ -214,3 +216,4 @@ def logout():
 
 if __name__ == '__main__':
     app.run()
+    

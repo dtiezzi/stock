@@ -5,9 +5,22 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="stylesheet" href="{{ url_for('static', filename='table.css') }}">
-    <title>STOCK MARKET API</title>
-</head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='table.css') }}">        
+        <title>STOCK MARKET API</title>
+        <script src="{{ url_for('static', filename='jquery-3.6.1.slim.js') }}"></script>
+        <!-- <script>
+                $('#yield_status').ready(function() {
+                    if(parseInt($(this).html()) >= 0) {
+                        $('#ticker_row').addClass('color1');
+                    }
+                    else {
+                        $('#ticker_row').addClass('color2');
+                    }
+                });
+        </script> -->
+        
+        
+    </head>
 <body>
     <nav class="navbar fixed-top navbar-dark bg-dark">
         <div class="container-fluid">
@@ -41,34 +54,52 @@
             <div style="border-style: solid; border-radius: 10px; margin-top: 10px;">
                 <table>
                     <tr>
-                    <th class="c">Ticker</th>
-                    <th class="c">Cor.</th>
-                    <th class="r">Valor</th>
-                    <th class="r">Quant.</th>
-                    <th class="c">Data</th>
-                    <th class="r">Valor Atual</th>
-                    <th class="r">Total</th>
-                    <th class="r">Rendimento</th>
+                    <th id="c">Ticker</th>
+                    <th id="c">Cor.</th>
+                    <th id="r">Valor</th>
+                    <th id="r">Quant.</th>
+                    <th id="c">Data</th>
+                    <th id="r">Valor Atual</th>
+                    <th id="r">Total</th>
+                    <th id="r">Rendimento</th>
                     </tr>
+                    
                     {% for k in myShares %}
                         <tr>
                         <form action="/plotticker" method="POST">
                             <input type="hidden" name="ticker" value="{{ myShares[k]['ticker'].split(':')[0] }}">
-                            <td class="c"><button class="btn btn-outline-primary" type="submit">{{ k.split(':')[0] }}</button></td>
+                            <td id="c"><button class="btn btn-outline-primary" type="submit">{{ k.split(':')[0] }}</button></td>
                         </form>
-                        <td class="c">{{ myShares[k]['broker'] }}</td>
-                        <td class="r">{{ myShares[k]['purchase_val'] }}</td>
-                        <td class="r">{{ myShares[k]['quant'] }}</td>
-                        <td class="c">{{ myShares[k]['purchase_dt'] }}</td>
-                        <td class="r">{{ myShares[k]['current_val'] }}</td>
-                        <td class="r">{{ myShares[k]['total_val'] }}</td>
-                        <td class="r">{{ myShares[k]['yield'] }}%</td>
+                        <td class="{{ k.split(':')[0] }}" id="c">{{ myShares[k]['broker'] }}</td>
+                        <td class="{{ k.split(':')[0] }}" id="r">{{ myShares[k]['purchase_val'] }}</td>
+                        <td class="{{ k.split(':')[0] }}" id="r">{{ myShares[k]['quant'] }}</td>
+                        <td class="{{ k.split(':')[0] }}" id="c">{{ myShares[k]['purchase_dt'] }}</td>
+                        <td class="{{ k.split(':')[0] }}" id="r">{{ myShares[k]['current_val'] }}</td>
+                        <td class="{{ k.split(':')[0] }}" id="r">{{ myShares[k]['total_val'] }}</td>
+                        <td class="{{ k.split(':')[0] }}" id="r">{{ myShares[k]['yield'] }}%</td>
                         </tr>
+                        <script>
+                            $(document).ready(function(){
+                                var yield = ["{{ myShares[k]['yield'] }}"]
+                                var class_name = ["{{ k.split(':')[0] }}"]
+                                if(yield >= 0) {
+                                    $("."+class_name[0]).attr("style","color:green");
+                                } else {
+                                    $("."+class_name[0]).attr("style","color:red");
+                                }
+                            });
+                        </script>
                     {% endfor %}
                 </table>
             </div>
           </div>
           <div class="col-4">
+            <figure class="img-fluid mx-auto">
+                {{ figure1[0]|safe }}
+            </figure>
+            <figure class="img-fluid mx-auto">
+                {{ figure1[1]|safe }}
+            </figure>
             <figure class="img-fluid mx-auto">
                 {{ figure[0]|safe }}
             </figure>
@@ -83,21 +114,23 @@
                     <button class="btn btn-warning" type="submit">VENDIDO</button>
                 </form>
             </div>
+            
             <h3>Vendas do Mês</h3>
             <div style="border-style: solid; border-radius: 10px; padding: 2%;">
                 <table>
                     <tr>
-                        <th class="l">Ticker</th>
-                        <th class="c">Data</th>
-                        <th class="r">Venda</th>
-                        <th class="r">Lucro</th>
+                        <th id="l">Ticker</th>
+                        <th id="c">Data</th>
+                        <th id="r">Venda</th>
+                        <th id="r">Lucro</th>
                     </tr>
                     {% for k in sold %}
+                    
                         <tr>
-                            <td class="l">{{ k[1] }}</td>
-                            <td class="c">{{ k[4] }}</td>
-                            <td class="r">{{  "%.2f"|format(k[2]*k[3]) }}</td>
-                            <td class="r">{{ k[5] }}</td>
+                            <td id="l">{{ k[1] }}</td>
+                            <td id="c">{{ k[4] }}</td>
+                            <td id="r">{{  "%.2f"|format(k[2]*k[3]) }}</td>
+                            <td id="r">{{ k[5] }}</td>
                         </tr>
                     {% endfor %}
                     <tr>
@@ -116,6 +149,8 @@
       </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> -->
+    <script src="{{ url_for('static', filename='jquery-3.6.1.slim.js') }}"></script>
     
 </body>
 </html>

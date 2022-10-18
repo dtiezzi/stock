@@ -1,4 +1,3 @@
-from cv2 import denoise_TVL1
 from flask import Flask, render_template, url_for, redirect, request, session
 from matplotlib import ticker
 import yahoo_fin.stock_info as si
@@ -10,6 +9,7 @@ import pickle
 import pandas as pd
 import plotly.express as px
 from plotyield import plotyield, plotvalues
+from calcyield import calc
 
 app = Flask(__name__)
 app.config["SESSION_PERMANENT"] = False
@@ -53,12 +53,22 @@ def user():
                      "Close": "Valor",
                      "Date": "Data"
                  }, title='Cotação IBOV')
+                calc(session['user_id'])
                 global div
-                div = fig.to_html(full_html=False)
+                if fig:
+                    div = fig.to_html(full_html=False)
+                else:
+                    div = None
                 global div1
-                df_quote = pd.read_csv('./static/files/my_investiments.csv')
-                div1 = plotyield(df_quote).to_html(full_html=False)
-                div2 = plotvalues(df_quote).to_html(full_html=False)
+                global div2
+                df_quote = pd.read_csv(f"./static/files/my_investiments_{session['user_id']}.csv")
+                fig1 = plotyield(df_quote)
+                fig2 = plotvalues(df_quote)
+                if fig1:
+                    div1 = fig1.to_html(full_html=False)
+                    div2 = fig2.to_html(full_html=False)
+                else:
+                    div1, div2 = None, None
                 global ids_dict
                 with open("./static/files/idstickers.pkl", "rb") as file:
                     ids_dict = pickle.load(file)
@@ -215,5 +225,5 @@ def logout():
         return render_template('user.html')
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0')
     

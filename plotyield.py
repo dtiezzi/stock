@@ -2,6 +2,8 @@ import pandas as pd
 import plotly.express as px
 
 def plotyield(df):
+    if df.empty:
+        return None
     fig = px.line(df, x='Date', y='yield', labels={
                         "yield": "%",
                         "Date": "Data"
@@ -24,6 +26,8 @@ def plotyield(df):
     return fig
 
 def plotvalues(df):
+    if df.empty:
+        return None
     fig = px.line(df, x='Date', y=['total_yield', 'total_invest'], color_discrete_sequence=['gold', 'red'], labels={
                         "total_yield": "R$",
                         "Date": "Data"
@@ -44,3 +48,8 @@ def plotvalues(df):
         )
     )
     return fig
+
+# df_quote = pd.read_csv('./static/files/my_investiments.csv')
+# print(df_quote.columns)
+# plotyield(df_quote).show()
+# plotvalues(df_quote).show()
